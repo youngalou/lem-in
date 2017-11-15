@@ -14,18 +14,17 @@
 
 typedef struct		s_link
 {
-	int				room;
-	int				dist;
+	struct s_room	*room;
 	struct s_link	*next;
 }					t_link;
 
 typedef struct		s_room
 {
-	int				name;
+	int				id;
 	int				x;
 	int				y;
-	struct s_room	*next;
 	t_link			*link;
+	struct s_room	*next;
 }					t_room;
 
 typedef	struct		s_data
@@ -35,9 +34,7 @@ typedef	struct		s_data
 	char			st_ed;
 	int				start;
 	int				end;
-	char			hash_flag;
 	t_room			*room;
-	t_room			**hash;
 }					t_data;
 
 
@@ -45,7 +42,6 @@ typedef	struct		s_data
 ** --------------- main.c --------------
 */
 
-void	set_hash(t_data *data);
 void	load_data(t_data *data);
 t_data	*init_data(void);
 
@@ -65,3 +61,4 @@ void	parse_data(t_data *data, char *line);
 
 void	print_rooms(t_data *data);
 void	print_hash(t_data *data);
+void	print_links(t_data *data);

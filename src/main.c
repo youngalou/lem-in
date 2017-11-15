@@ -12,23 +12,6 @@
 
 #include "../lem-in.h"
 
-void	set_hash(t_data *data)
-{
-	t_room	*room;
-	int		i;
-
-	data->hash = (t_room**)malloc(sizeof(t_room*) * data->rooms);
-	room = data->room;
-	i = 0;
-	while (room)
-	{
-		data->hash[i] = room;
-		room = room->next;
-		i++;
-	}
-	data->hash_flag = 1;
-}
-
 void	load_data(t_data *data)
 {
 	char	*line;
@@ -49,9 +32,7 @@ t_data	*init_data(void)
 	data->st_ed = 0;
 	data->start = 0;
 	data->end = 0;
-	data->hash_flag = 0;
 	data->room = NULL;
-	data->hash = NULL;
 	return (data);
 }
 
@@ -61,6 +42,6 @@ int		main(void)
 
 	data = init_data();
 	load_data(data);
-	print_hash(data);
+	print_links(data);
 	return (0);
 }

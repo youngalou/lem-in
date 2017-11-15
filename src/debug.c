@@ -20,20 +20,25 @@ void	print_rooms(t_data *data)
 	room = data->room;
 	while (room)
 	{
-		ft_printf("name: %d\tx: %d\ty: %d\n", room->name, room->x, room->y);
+		ft_printf("name: %d\tx: %d\ty: %d\n", room->id, room->x, room->y);
 		room = room->next;
 	}
 }
 
-void	print_hash(t_data *data)
+void	print_links(t_data *data)
 {
-	int		i;
+	t_room	*room;
+	t_link	*link;
 
-	ft_printf("start: %d\tend: %d\n", data->start, data->end);
-	i = 0;
-	while (i < data->rooms)
+	room = data->room;
+	while (room)
 	{
-		ft_printf("name: %d\tx: %d\ty: %d\n", data->hash[i]->name, data->hash[i]->x, data->hash[i]->y);
-		i++;
+		link = room->link;
+		while (link)
+		{
+			ft_printf("room: %d\tlink: %d\n", room->id, link->room->id);
+			link = link->next;
+		}
+		room = room->next;
 	}
 }

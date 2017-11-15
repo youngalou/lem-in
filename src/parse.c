@@ -27,12 +27,36 @@ void	parse_comment(t_data *data, char *line)
 	ft_strdel(&line);
 }
 
+t_link	*add_link(t_room *r1, t_room *r2, int link_id)
+{
+	t_link	*link;
+	t_link	*new;
+
+	while (r2->id != link_id && r2->next)
+		r2 = r2->next;
+	new = (t_link*)malloc(sizeof(t_link));
+	new->room = r2;
+	new->next = NULL;
+	if (!r1->link)
+		return (new);
+	link = r1->link;
+	while (link->next)
+	{
+		if (link->room->id == r1->id)
+			return (r1->link);
+		link = link->next;
+	}
+	if (link->room->id != link_id)
+		link->next = new;
+	return (r1->link);
+}
+
 void	parse_link(t_data *data, char *line)
 {
 	int		r1;
 	int		r2;
 	int		i;
-	t_room	**hash;
+	t_room	*room;
 
 	r1 = ft_atoi(line);
 	i = 0;
@@ -40,8 +64,15 @@ void	parse_link(t_data *data, char *line)
 		i++;
 	i++;
 	r2 = ft_atoi(&line[i]);
-	hash = data->hash;
-	//hash[r1]->link = (t_link*)malloc(sizeof(t_link));
+	room = data->room;
+	while (room)
+	{
+		if (room->id == r1)
+			room->link = add_link(room, data->room, r2);
+		else if (room->id == r2)
+			room->link = add_link(room, data->room, r1);
+		room = room->next;
+	}
 	ft_strdel(&line);
 }
 
@@ -52,11 +83,11 @@ t_room	 *parse_room(t_data *data, char *line)
 	int		i;
 
 	new = (t_room*)malloc(sizeof(t_room));
-	new->name = ft_atoi(line);
+	new->id = ft_atoi(line);
 	if (data->st_ed == 1)
-		data->start = new->name;
+		data->start = new->id;
 	else if (data->st_ed == 2)
-		data->end = new->name;
+		data->end = new->id;
 	data->st_ed = 0;
 	i = 0;
 	while (ft_isdigit(line[i]))
@@ -90,11 +121,7 @@ void	parse_data(t_data *data, char *line)
 	if (line[i] == ' ')
 		data->room = parse_room(data, line);
 	else if (line[i] == '-')
-	{
-		if (!data->hash_flag)
-			set_hash(data);
 		parse_link(data, line);
-	}
 	else if (line[i] == '#')
 		parse_comment(data, line);
 	else
