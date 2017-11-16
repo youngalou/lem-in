@@ -16,11 +16,11 @@ void	print_rooms(t_data *data)
 {
 	t_room	*room;
 
-	ft_printf("start: %d\tend: %d\n", data->start, data->end);
+	ft_printf("start: %s\tend: %s\n", data->start_id, data->end_id);
 	room = data->room;
 	while (room)
 	{
-		ft_printf("name: %d\tx: %d\ty: %d\n", room->id, room->x, room->y);
+		ft_printf("id: %s\tx: %d\ty: %d\n", room->id, room->x, room->y);
 		room = room->next;
 	}
 }
@@ -36,7 +36,7 @@ void	print_links(t_data *data)
 		link = room->link;
 		while (link)
 		{
-			ft_printf("room: %d\tlink: %d\n", room->id, link->room->id);
+			ft_printf("room: %s\tlink: %s\n", room->id, link->room->id);
 			link = link->next;
 		}
 		room = room->next;

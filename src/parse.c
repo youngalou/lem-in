@@ -27,12 +27,12 @@ void	parse_comment(t_data *data, char *line)
 	ft_strdel(&line);
 }
 
-t_link	*add_link(t_room *r1, t_room *r2, int link_id)
+t_link	*add_link(t_room *r1, t_room *r2, char *link_id)
 {
 	t_link	*link;
 	t_link	*new;
-
-	while (r2->id != link_id && r2->next)
+	
+	while (r2->next && ft_strcmp(r2->id, link_id))
 		r2 = r2->next;
 	new = (t_link*)malloc(sizeof(t_link));
 	new->room = r2;
@@ -42,34 +42,31 @@ t_link	*add_link(t_room *r1, t_room *r2, int link_id)
 	link = r1->link;
 	while (link->next)
 	{
-		if (link->room->id == r1->id)
+		if (!ft_strcmp(link->room->id, r1->id))
 			return (r1->link);
 		link = link->next;
 	}
-	if (link->room->id != link_id)
+	if (ft_strcmp(link->room->id, link_id))
 		link->next = new;
 	return (r1->link);
 }
 
 void	parse_link(t_data *data, char *line)
 {
-	int		r1;
-	int		r2;
-	int		i;
+	char	**str;
+	char	*r1;
+	char	*r2;
 	t_room	*room;
 
-	r1 = ft_atoi(line);
-	i = 0;
-	while (ft_isdigit(line[i]))
-		i++;
-	i++;
-	r2 = ft_atoi(&line[i]);
+	str = ft_strsplit(line, '-');
+	r1 = str[0];
+	r2 = str[1];
 	room = data->room;
 	while (room)
 	{
-		if (room->id == r1)
+		if (!ft_strcmp(room->id, r1))
 			room->link = add_link(room, data->room, r2);
-		else if (room->id == r2)
+		else if (!ft_strcmp(room->id, r2))
 			room->link = add_link(room, data->room, r1);
 		room = room->next;
 	}
@@ -78,30 +75,25 @@ void	parse_link(t_data *data, char *line)
 
 t_room	 *parse_room(t_data *data, char *line)
 {
+	char	**str;
 	t_room	*new;
 	t_room	*room;
-	int		i;
 
+	str = ft_strsplit(line, ' ');
 	new = (t_room*)malloc(sizeof(t_room));
-	new->id = ft_atoi(line);
+	new->id = str[0];
 	if (data->st_ed == 1)
-		data->start = new->id;
+		data->start_id = new->id;
 	else if (data->st_ed == 2)
-		data->end = new->id;
+		data->end_id = new->id;
 	data->st_ed = 0;
-	i = 0;
-	while (ft_isdigit(line[i]))
-		i++;
-	i++;
-	new->x = ft_atoi(&line[i]);
-	while (ft_isdigit(line[i]))
-		i++;
-	i++;
-	new->y = ft_atoi(&line[i]);
+	new->x = ft_atoi(str[1]);
+	new->y = ft_atoi(str[2]);
 	new->next = NULL;
 	new->link = NULL;
 	data->rooms++;
 	ft_strdel(&line);
+	// ft_strdel(str); not sure of the best way to free this
 	if (!data->room)
 		return (new);
 	room = data->room;

@@ -20,7 +20,7 @@ typedef struct		s_link
 
 typedef struct		s_room
 {
-	int				id;
+	char			*id;
 	int				x;
 	int				y;
 	t_link			*link;
@@ -32,8 +32,8 @@ typedef	struct		s_data
 	int				ants;
 	int				rooms;
 	char			st_ed;
-	int				start;
-	int				end;
+	char			*start_id;
+	char			*end_id;
 	t_room			*room;
 }					t_data;
 

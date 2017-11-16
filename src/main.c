@@ -30,8 +30,8 @@ t_data	*init_data(void)
 	data->ants = 0;
 	data->rooms = 0;
 	data->st_ed = 0;
-	data->start = 0;
-	data->end = 0;
+	data->start_id = 0;
+	data->end_id = 0;
 	data->room = NULL;
 	return (data);
 }
