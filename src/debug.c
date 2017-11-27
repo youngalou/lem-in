@@ -36,7 +36,7 @@ void	print_links(t_data *data)
 		link = room->link;
 		while (link)
 		{
-			ft_printf("room: %s\tlink: %s\n", room->id, link->room->id);
+			ft_printf("room: %s\tlink: %s\tdist: %d\n", room->id, link->room->id, link->dist);
 			link = link->next;
 		}
 		room = room->next;

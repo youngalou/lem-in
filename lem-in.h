@@ -11,10 +11,12 @@
 /* ************************************************************************** */
 
 #include "libft/superlibft.h"
+#include <math.h>
 
 typedef struct		s_link
 {
 	struct s_room	*room;
+	int				dist;
 	struct s_link	*next;
 }					t_link;
 
@@ -35,6 +37,7 @@ typedef	struct		s_data
 	char			*start_id;
 	char			*end_id;
 	t_room			*room;
+	char			***paths;
 }					t_data;
 
 
@@ -62,3 +65,9 @@ void	parse_data(t_data *data, char *line);
 void	print_rooms(t_data *data);
 void	print_hash(t_data *data);
 void	print_links(t_data *data);
+
+/*
+** --------------- path.c --------------
+*/
+
+void	start_path(t_data *data);

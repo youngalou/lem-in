@@ -42,6 +42,8 @@ int		main(void)
 
 	data = init_data();
 	load_data(data);
+	print_rooms(data);
 	print_links(data);
+	//find_path(data);
 	return (0);
 }

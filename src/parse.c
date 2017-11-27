@@ -20,7 +20,7 @@ void	error(void)
 
 void	parse_comment(t_data *data, char *line)
 {
-	if (ft_strcmp(line, "##start") == 0)
+	if (ft_strcmp(line, "##start") == 0) 
 		data->st_ed = 1;
 	else if (ft_strcmp(line, "##end") == 0)
 		data->st_ed = 2;
@@ -31,11 +31,16 @@ t_link	*add_link(t_room *r1, t_room *r2, char *link_id)
 {
 	t_link	*link;
 	t_link	*new;
-	
+	int		dist_x;
+	int		dist_y;
+
 	while (r2->next && ft_strcmp(r2->id, link_id))
 		r2 = r2->next;
+	dist_x = r1->x - r2->x;
+	dist_y = r1->y - r2->y;
 	new = (t_link*)malloc(sizeof(t_link));
 	new->room = r2;
+	new->dist = sqrt((dist_x * dist_x) + (dist_y * dist_y));
 	new->next = NULL;
 	if (!r1->link)
 		return (new);
@@ -55,7 +60,7 @@ void	parse_link(t_data *data, char *line)
 {
 	char	**str;
 	char	*r1;
-	char	*r2;
+	char	*r2; 
 	t_room	*room;
 
 	str = ft_strsplit(line, '-');
@@ -79,6 +84,8 @@ t_room	 *parse_room(t_data *data, char *line)
 	t_room	*new;
 	t_room	*room;
 
+	if (*line == 'L')
+		error();
 	str = ft_strsplit(line, ' ');
 	new = (t_room*)malloc(sizeof(t_room));
 	new->id = str[0];
@@ -108,7 +115,7 @@ void	parse_data(t_data *data, char *line)
 	int		i;
 
 	i = 0;
-	while (ft_isdigit(line[i]))
+	while (line[i] != ' ' && line[i] != '-' && line[i] != '#')
 		i++;
 	if (line[i] == ' ')
 		data->room = parse_room(data, line);
