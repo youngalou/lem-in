@@ -42,3 +42,22 @@ void	print_links(t_data *data)
 		room = room->next;
 	}
 }
+
+void	print_paths(t_data *data)
+{
+	t_vpath	*valid;
+	int		i;
+
+	valid = data->valid;
+	while (valid)
+	{
+		i = 0;
+		while (i < valid->len)
+		{
+			ft_printf("%s ", valid->path[i]);
+			i++;
+		}
+		valid = valid->next;
+		ft_putchar('\n');
+	}
+}

@@ -29,6 +29,13 @@ typedef struct		s_room
 	struct s_room	*next;
 }					t_room;
 
+typedef	struct		s_vpath
+{
+	char			**path;
+	int				len;
+	struct	s_vpath	*next;
+}					t_vpath;
+
 typedef	struct		s_data
 {
 	int				ants;
@@ -37,7 +44,7 @@ typedef	struct		s_data
 	char			*start_id;
 	char			*end_id;
 	t_room			*room;
-	char			***paths;
+	t_vpath			*valid;
 }					t_data;
 
 
@@ -63,11 +70,15 @@ void	parse_data(t_data *data, char *line);
 */
 
 void	print_rooms(t_data *data);
-void	print_hash(t_data *data);
 void	print_links(t_data *data);
+void	print_paths(t_data *data);
 
 /*
 ** --------------- path.c --------------
 */
 
+void	add_valid_path(t_data *data, char **path, int path_len);
+//char	**add_to_path(char **path, char *room_id);
+int		search_path(t_data *data, char *room_id);
+void	find_path(t_data *data, t_room *room, char **path, int path_len);
 void	start_path(t_data *data);

@@ -17,6 +17,7 @@ LIBFT = libft/libft.a
 FILES = main.c \
 		parse.c \
 		debug.c \
+		path.c \
 
 SRC = $(addprefix src/, $(FILES))
 
@@ -29,7 +30,7 @@ $(NAME): $(LIBFT) $(OBJ) lem-in.h
 	@echo "\033[32m- $(NAME) executable compiled\033[0m"
 
 $(OBJ): %.o: %.c
-	gcc -c $(CFLAG) $< -o $@
+	@gcc -c $(CFLAG) $< -o $@
 
 $(LIBFT):
 	@make -C libft

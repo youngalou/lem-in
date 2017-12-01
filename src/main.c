@@ -33,6 +33,7 @@ t_data	*init_data(void)
 	data->start_id = 0;
 	data->end_id = 0;
 	data->room = NULL;
+	data->valid = NULL;
 	return (data);
 }
 
@@ -42,8 +43,9 @@ int		main(void)
 
 	data = init_data();
 	load_data(data);
-	print_rooms(data);
-	print_links(data);
-	//find_path(data);
+	// print_rooms(data);
+	// print_links(data);
+	start_path(data);
+	print_paths(data);
 	return (0);
 }
