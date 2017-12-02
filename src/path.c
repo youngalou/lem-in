@@ -32,6 +32,7 @@ void	add_valid_path(t_data *data, char **path, int path_len)
 	t_vpath *new;
 	int		i;
 
+	ft_printf("VALID\n");
 	new = malloc(sizeof(t_vpath));
 	new->path = cpy_2D(new->path, path, path_len + 1);
 	new->len = path_len;
@@ -56,26 +57,24 @@ void	add_to_path(char **path, char *room_id)
 
 	i = 0;
 	while (path[i])
+	{
+		ft_printf("%s ", path[i]);
 		i++;
+	}
+	ft_printf("%s\n", room_id);
 	path[i] = ft_strdup(room_id);
 }
 
-int		search_path(t_data *data, char *room_id)
+int		search_path(char **path, char *room_id)
 {
-	t_vpath *valid;
 	int		i;
 
-	valid = data->valid;
-	while (valid)
+	i = 0;
+	while (path[i])
 	{
-		i = 0;
-		while (i < valid->len)
-		{
-			if (!ft_strcmp(valid->path[i], room_id))
-				return (1);
-			i++;
-		}
-		valid = valid->next;
+		if (!ft_strcmp(path[i], room_id))
+			return (1);
+		i++;
 	}
 	return (0);
 }
@@ -84,17 +83,18 @@ void	find_path(t_data *data, t_room *room, char **path, int path_len)
 {
 	t_link	*link;
 
+	ft_printf("room: %s\n", room->id);
 	link = room->link;
 	while (link)
 	{
-		ft_printf("hi\n");
-		if (!search_path(data, link->room->id))
+		ft_printf("- link: %s\n", link->room->id);
+		if (!ft_strcmp(link->room->id, data->end_id))
+			add_valid_path(data, path, path_len);
+		if (!search_path(path, link->room->id))
 		{
 			add_to_path(path, link->room->id);
 			find_path(data, link->room, path, path_len + 1);
 		}
-		if (!ft_strcmp(link->room->id, data->end_id))
-			add_valid_path(data, path, path_len);
 		link = link->next;
 	}
 }
@@ -103,12 +103,18 @@ void	start_path(t_data *data)
 {
 	char	**path;
 	t_room	*room;
+	int		i;
 
 	path = malloc(sizeof(char*) * data->rooms);
-	ft_bzero(path, data->rooms);
+	i = 0;
+	while (i < data->rooms)
+	{
+		path[i] = NULL;
+		i++;
+	}
 	room = data->room;
 	while (room && ft_strcmp(room->id, data->start_id))
 		room = room->next;
-	add_to_path(path, room->id);
+	add_to_path(path, room->id); //adds the start room to the path
 	find_path(data, room, path, 0);
 }

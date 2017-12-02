@@ -78,7 +78,7 @@ void	print_paths(t_data *data);
 */
 
 void	add_valid_path(t_data *data, char **path, int path_len);
-//char	**add_to_path(char **path, char *room_id);
-int		search_path(t_data *data, char *room_id);
+void	add_to_path(char **path, char *room_id);
+int		search_path(char **path, char *room_id);
 void	find_path(t_data *data, t_room *room, char **path, int path_len);
 void	start_path(t_data *data);

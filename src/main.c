@@ -18,6 +18,7 @@ void	load_data(t_data *data)
 
 	get_next_line(0, &line);
 	data->ants = ft_atoi(line);
+	ft_strdel(&line);
 	while (get_next_line(0, &line) > 0)
 		parse_data(data, line);
 }
@@ -44,7 +45,7 @@ int		main(void)
 	data = init_data();
 	load_data(data);
 	// print_rooms(data);
-	// print_links(data);
+	print_links(data);
 	start_path(data);
 	print_paths(data);
 	return (0);
