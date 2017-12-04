@@ -12,15 +12,9 @@
 
 #include "../lem-in.h"
 
-void	error(void)
-{
-	ft_printf("ERROR\n");
-	exit(0);
-}
-
 void	parse_comment(t_data *data, char *line)
 {
-	if (ft_strcmp(line, "##start") == 0) 
+	if (ft_strcmp(line, "##start") == 0)
 		data->st_ed = 1;
 	else if (ft_strcmp(line, "##end") == 0)
 		data->st_ed = 2;
@@ -60,7 +54,7 @@ void	parse_link(t_data *data, char *line)
 {
 	char	**str;
 	char	*r1;
-	char	*r2; 
+	char	*r2;
 	t_room	*room;
 
 	str = ft_strsplit(line, '-');
@@ -78,7 +72,7 @@ void	parse_link(t_data *data, char *line)
 	ft_strdel(&line);
 }
 
-t_room	 *parse_room(t_data *data, char *line)
+t_room	*parse_room(t_data *data, char *line)
 {
 	char	**str;
 	t_room	*new;

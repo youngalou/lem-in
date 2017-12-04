@@ -18,6 +18,7 @@ FILES = main.c \
 		parse.c \
 		debug.c \
 		path.c \
+		valid.c \
 
 SRC = $(addprefix src/, $(FILES))
 

@@ -12,6 +12,12 @@
 
 #include "../lem-in.h"
 
+void	error(void)
+{
+	ft_printf("ERROR\n");
+	exit(0);
+}
+
 void	load_data(t_data *data)
 {
 	char	*line;
@@ -44,7 +50,6 @@ int		main(void)
 
 	data = init_data();
 	load_data(data);
-	// print_rooms(data);
 	print_links(data);
 	start_path(data);
 	print_paths(data);

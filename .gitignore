@@ -1,3 +1,4 @@
 lem-in
 *.o
 .nfs*
+*.a

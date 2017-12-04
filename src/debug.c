@@ -61,3 +61,16 @@ void	print_paths(t_data *data)
 		ft_putchar('\n');
 	}
 }
+
+void	print_local_path(t_data *data, char **path)
+{
+	int		i;
+
+	i = 0;
+	while (i < data->rooms && path[i])
+	{
+		ft_printf("%s ", path[i]);
+		i++;
+	}
+	ft_putchar('\n');
+}

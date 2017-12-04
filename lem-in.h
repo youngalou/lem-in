@@ -52,6 +52,7 @@ typedef	struct		s_data
 ** --------------- main.c --------------
 */
 
+void	error(void);
 void	load_data(t_data *data);
 t_data	*init_data(void);
 
@@ -59,7 +60,6 @@ t_data	*init_data(void);
 ** --------------- parse.c --------------
 */
 
-void	error(void);
 void	parse_comment(t_data *data, char *line);
 void	parse_link(t_data *data, char *line);
 t_room	*parse_room(t_data *data, char *line);
@@ -72,13 +72,20 @@ void	parse_data(t_data *data, char *line);
 void	print_rooms(t_data *data);
 void	print_links(t_data *data);
 void	print_paths(t_data *data);
+void	print_local_path(t_data *data, char **path);
 
 /*
 ** --------------- path.c --------------
 */
 
-void	add_valid_path(t_data *data, char **path, int path_len);
-void	add_to_path(char **path, char *room_id);
-int		search_path(char **path, char *room_id);
+void	add_to_path(t_data *data, char **path, char *room_id);
+int		search_path(t_data *data, char **path, char *room_id);
 void	find_path(t_data *data, t_room *room, char **path, int path_len);
 void	start_path(t_data *data);
+
+/*
+** --------------- valid.c --------------
+*/
+
+char	**copy_path(char **dest, char **src, int n);
+void	add_valid_path(t_data *data, char **path, int path_len);
