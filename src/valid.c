@@ -30,15 +30,11 @@ void	add_valid_path(t_data *data, char **path, int path_len)
 {
 	t_vpath *valid;
 	t_vpath *new;
-	int		i;
 
 	new = malloc(sizeof(t_vpath));
-	new->path = copy_path(new->path, path, path_len);
+	new->path = copy_path(new->path, path, path_len + 1);
 	new->len = path_len;
 	new->next = NULL;
-	i = 0;
-	while (i < path_len)
-		i++;
 	if (!data->valid)
 	{
 		data->valid = new;

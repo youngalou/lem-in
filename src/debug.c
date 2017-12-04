@@ -52,7 +52,7 @@ void	print_paths(t_data *data)
 	while (valid)
 	{
 		i = 0;
-		while (i < valid->len)
+		while (i <= valid->len)
 		{
 			ft_printf("%s ", valid->path[i]);
 			i++;

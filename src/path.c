@@ -12,35 +12,12 @@
 
 #include "../lem-in.h"
 
-void	add_to_path(t_data *data, char **path, char *room_id)
+int		search_path(char **path, char *room_id, int path_len)
 {
 	int		i;
 
 	i = 0;
-	while (i < data->rooms && path[i])
-		i++;
-	path[i] = ft_strdup(room_id);
-}
-
-void	remove_from_path(t_data *data, char **path, char *room_id)
-{
-	int		i;
-
-	i = 0;
-	while (i < data->rooms && path[i])
-	{
-		if (!ft_strcmp(path[i], room_id))
-			ft_strdel(&path[i]);
-		i++;
-	}
-}
-
-int		search_path(t_data *data, char **path, char *room_id)
-{
-	int		i;
-
-	i = 0;
-	while (i < data->rooms && path[i])
+	while (i <= path_len && path[i])
 	{
 		if (!ft_strcmp(path[i], room_id))
 			return (1);
@@ -53,21 +30,21 @@ void	find_path(t_data *data, t_room *room, char **path, int path_len)
 {
 	t_link	*link;
 
-	add_to_path(data, path, room->id);
+	path[path_len] = ft_strdup(room->id);
 	if (!ft_strcmp(room->id, data->end_id))
 	{
 		add_valid_path(data, path, path_len);
-		remove_from_path(data, path, room->id);
+		ft_strdel(&path[path_len]);
 		return ;
 	}
 	link = room->link;
 	while (link)
 	{
-		if (!search_path(data, path, link->room->id))
+		if (!search_path(path, link->room->id, path_len))
 			find_path(data, link->room, path, path_len + 1);
 		link = link->next;
 	}
-	remove_from_path(data, path, room->id);
+	ft_strdel(&path[path_len]);
 }
 
 void	start_path(t_data *data)
@@ -86,5 +63,5 @@ void	start_path(t_data *data)
 	room = data->room;
 	while (room && ft_strcmp(room->id, data->start_id))
 		room = room->next;
-	find_path(data, room, path, 1);
+	find_path(data, room, path, 0);
 }

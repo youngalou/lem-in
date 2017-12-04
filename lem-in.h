@@ -78,8 +78,7 @@ void	print_local_path(t_data *data, char **path);
 ** --------------- path.c --------------
 */
 
-void	add_to_path(t_data *data, char **path, char *room_id);
-int		search_path(t_data *data, char **path, char *room_id);
+int		search_path(char **path, char *room_id, int path_len);
 void	find_path(t_data *data, t_room *room, char **path, int path_len);
 void	start_path(t_data *data);
 
