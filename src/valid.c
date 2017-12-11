@@ -12,36 +12,59 @@
 
 #include "../lem-in.h"
 
-char	**copy_path(char **dest, char **src, int n)
+int		path_cmp(t_vpath *optimal, t_vpath *valid)
 {
 	int		i;
-
-	dest = (char**)malloc(sizeof(char*) * n);
-	i = 0;
-	while (i < n)
+	int		j;
+	
+	while (optimal)
 	{
-		dest[i] = ft_strdup(src[i]);
-		i++;
+		i = 1;
+		while (i < valid->len)
+		{
+			j = 1;
+			while (j < optimal->len)
+			{
+				if (!ft_strcmp(valid->path[i], optimal->path[j]))
+					return (1);
+				j++;
+			}
+			i++;
+		}
+		optimal = optimal->next;
 	}
-	return (dest);
+	return (0);
 }
 
-void	add_valid_path(t_data *data, char **path, int path_len)
+t_vpath	*check_tmp(t_data *data, t_vpath *valid, t_vpath *tmp)
 {
-	t_vpath *valid;
-	t_vpath *new;
-
-	new = malloc(sizeof(t_vpath));
-	new->path = copy_path(new->path, path, path_len + 1);
-	new->len = path_len;
-	new->next = NULL;
-	if (!data->valid)
+	if (!tmp || valid->len < tmp->len)
 	{
-		data->valid = new;
-		return ;
+		if (path_cmp(data->optimal, valid))
+			return (tmp);
+		data->flag = 0;
+		return (valid);
 	}
-	valid = data->valid;
-	while (valid->next)
-		valid = valid->next;
-	valid->next = new;
+	return (tmp);
+}
+
+void	find_optimal_paths(t_data *data)
+{
+	t_vpath	*valid;
+	t_vpath *tmp;
+
+	data->flag = 0;
+	while (!data->flag)
+	{
+		data->flag = 1;
+		valid = data->valid;
+		tmp = NULL;
+		while (valid)
+		{
+			tmp = check_tmp(data, valid, tmp);
+			valid = valid->next;
+		}
+		if (!data->flag)
+			data->optimal = add_path(data->optimal, tmp->path, tmp->len);
+	}
 }

@@ -43,7 +43,20 @@ void	print_links(t_data *data)
 	}
 }
 
-void	print_paths(t_data *data)
+void	print_local_path(char **path, int len)
+{
+	int		i;
+
+	i = 0;
+	while (i <= len)
+	{
+		ft_printf("%s ", path[i]);
+		i++;
+	}
+	ft_putchar('\n');
+}
+
+void	print_valid_paths(t_data *data)
 {
 	t_vpath	*valid;
 	int		i;
@@ -62,15 +75,21 @@ void	print_paths(t_data *data)
 	}
 }
 
-void	print_local_path(t_data *data, char **path)
+void	print_optimal_paths(t_data *data)
 {
+	t_vpath	*optimal;
 	int		i;
 
-	i = 0;
-	while (i < data->rooms && path[i])
+	optimal = data->optimal;
+	while (optimal)
 	{
-		ft_printf("%s ", path[i]);
-		i++;
+		i = 0;
+		while (i <= optimal->len)
+		{
+			ft_printf("%s ", optimal->path[i]);
+			i++;
+		}
+		ft_putchar('\n');
+		optimal = optimal->next;
 	}
-	ft_putchar('\n');
 }

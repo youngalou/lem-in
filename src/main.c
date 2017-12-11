@@ -12,8 +12,9 @@
 
 #include "../lem-in.h"
 
-void	error(void)
+void	error(char *line)
 {
+	ft_strdel(&line);
 	ft_printf("ERROR\n");
 	exit(0);
 }
@@ -41,6 +42,7 @@ t_data	*init_data(void)
 	data->end_id = 0;
 	data->room = NULL;
 	data->valid = NULL;
+	data->optimal = NULL;
 	return (data);
 }
 
@@ -50,8 +52,10 @@ int		main(void)
 
 	data = init_data();
 	load_data(data);
-	print_links(data);
 	start_path(data);
-	print_paths(data);
+	find_optimal_paths(data);
+	// print_links(data);
+	// print_paths(data);
+	print_optimal_paths(data);
 	return (0);
 }

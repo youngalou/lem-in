@@ -12,6 +12,38 @@
 
 #include "../lem-in.h"
 
+char	**copy_path(char **dest, char **src, int n)
+{
+	int		i;
+
+	dest = (char**)malloc(sizeof(char*) * n);
+	i = 0;
+	while (i < n)
+	{
+		dest[i] = ft_strdup(src[i]);
+		i++;
+	}
+	return (dest);
+}
+
+t_vpath	*add_path(t_vpath *valid, char **path, int path_len)
+{
+	t_vpath *new;
+	t_vpath *tmp;
+
+	new = malloc(sizeof(t_vpath));
+	new->path = copy_path(new->path, path, path_len + 1);
+	new->len = path_len;
+	new->next = NULL;
+	if (!valid)
+		return (new);
+	tmp = valid;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+	return (valid);
+}
+
 int		search_path(char **path, char *room_id, int path_len)
 {
 	int		i;
@@ -33,7 +65,7 @@ void	find_path(t_data *data, t_room *room, char **path, int path_len)
 	path[path_len] = ft_strdup(room->id);
 	if (!ft_strcmp(room->id, data->end_id))
 	{
-		add_valid_path(data, path, path_len);
+		data->valid = add_path(data->valid, path, path_len);
 		ft_strdel(&path[path_len]);
 		return ;
 	}
@@ -64,4 +96,5 @@ void	start_path(t_data *data)
 	while (room && ft_strcmp(room->id, data->start_id))
 		room = room->next;
 	find_path(data, room, path, 0);
+	free(path);
 }

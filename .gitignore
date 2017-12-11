@@ -2,3 +2,6 @@ lem-in
 *.o
 .nfs*
 *.a
+.vscode
+alloc_wrap.c
+*.dSYM

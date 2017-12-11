@@ -43,8 +43,10 @@ typedef	struct		s_data
 	char			st_ed;
 	char			*start_id;
 	char			*end_id;
+	char			flag;
 	t_room			*room;
 	t_vpath			*valid;
+	t_vpath			*optimal;
 }					t_data;
 
 
@@ -52,7 +54,7 @@ typedef	struct		s_data
 ** --------------- main.c --------------
 */
 
-void	error(void);
+void	error(char *line);
 void	load_data(t_data *data);
 t_data	*init_data(void);
 
@@ -71,13 +73,16 @@ void	parse_data(t_data *data, char *line);
 
 void	print_rooms(t_data *data);
 void	print_links(t_data *data);
-void	print_paths(t_data *data);
-void	print_local_path(t_data *data, char **path);
+void	print_local_path(char **path, int len);
+void	print_valid_paths(t_data *data);
+void	print_optimal_paths(t_data *data);
 
 /*
 ** --------------- path.c --------------
 */
 
+char	**copy_path(char **dest, char **src, int n);
+t_vpath	*add_path(t_vpath *valid, char **path, int path_len);
 int		search_path(char **path, char *room_id, int path_len);
 void	find_path(t_data *data, t_room *room, char **path, int path_len);
 void	start_path(t_data *data);
@@ -86,5 +91,6 @@ void	start_path(t_data *data);
 ** --------------- valid.c --------------
 */
 
-char	**copy_path(char **dest, char **src, int n);
-void	add_valid_path(t_data *data, char **path, int path_len);
+int		path_cmp(t_vpath *chosen, t_vpath *valid);
+t_vpath	*check_tmp(t_data *data, t_vpath *valid, t_vpath *tmp);
+void	find_optimal_paths(t_data *data);

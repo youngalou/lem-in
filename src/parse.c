@@ -69,6 +69,7 @@ void	parse_link(t_data *data, char *line)
 			room->link = add_link(room, data->room, r1);
 		room = room->next;
 	}
+	free(str);
 	ft_strdel(&line);
 }
 
@@ -79,7 +80,7 @@ t_room	*parse_room(t_data *data, char *line)
 	t_room	*room;
 
 	if (*line == 'L')
-		error();
+		error(line);
 	str = ft_strsplit(line, ' ');
 	new = (t_room*)malloc(sizeof(t_room));
 	new->id = str[0];
@@ -93,8 +94,10 @@ t_room	*parse_room(t_data *data, char *line)
 	new->next = NULL;
 	new->link = NULL;
 	data->rooms++;
+	ft_strdel(&str[1]);
+	ft_strdel(&str[2]);
+	free(str);
 	ft_strdel(&line);
-	// ft_strdel(str); not sure of the best way to free this
 	if (!data->room)
 		return (new);
 	room = data->room;
@@ -118,5 +121,5 @@ void	parse_data(t_data *data, char *line)
 	else if (line[i] == '#')
 		parse_comment(data, line);
 	else
-		error();
+		error(line);
 }
