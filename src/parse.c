@@ -10,15 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem-in.h"
+#include "../lemin.h"
 
 void	parse_comment(t_data *data, char *line)
 {
-	if (ft_strcmp(line, "##start") == 0)
+	if (!ft_strcmp(line, "##start"))
 		data->st_ed = 1;
-	else if (ft_strcmp(line, "##end") == 0)
+	else if (!ft_strcmp(line, "##end"))
 		data->st_ed = 2;
-	ft_strdel(&line);
 }
 
 t_link	*add_link(t_room *r1, t_room *r2, char *link_id)
@@ -41,7 +40,7 @@ t_link	*add_link(t_room *r1, t_room *r2, char *link_id)
 	link = r1->link;
 	while (link->next)
 	{
-		if (!ft_strcmp(link->room->id, r1->id))
+		if (!ft_strcmp(link->room->id, link_id)) // should probably free new here (but too many lines D:)
 			return (r1->link);
 		link = link->next;
 	}
@@ -69,8 +68,28 @@ void	parse_link(t_data *data, char *line)
 			room->link = add_link(room, data->room, r1);
 		room = room->next;
 	}
+	ft_strdel(&str[0]);
+	ft_strdel(&str[1]);
 	free(str);
-	ft_strdel(&line);
+}
+
+t_room	*add_room(t_data *data, char **str)
+{
+	t_room	*new;
+
+	new = (t_room*)malloc(sizeof(t_room));
+	new->id = str[0];
+	if (data->st_ed == 1)
+		data->start_id = new->id;
+	else if (data->st_ed == 2)
+		data->end_id = new->id;
+	data->st_ed = 0;
+	new->x = ft_atoi(str[1]);
+	new->y = ft_atoi(str[2]);
+	new->vac = 0;
+	new->link = NULL;
+	new->next = NULL;
+	return (new);
 }
 
 t_room	*parse_room(t_data *data, char *line)
@@ -82,22 +101,11 @@ t_room	*parse_room(t_data *data, char *line)
 	if (*line == 'L')
 		error(line);
 	str = ft_strsplit(line, ' ');
-	new = (t_room*)malloc(sizeof(t_room));
-	new->id = str[0];
-	if (data->st_ed == 1)
-		data->start_id = new->id;
-	else if (data->st_ed == 2)
-		data->end_id = new->id;
-	data->st_ed = 0;
-	new->x = ft_atoi(str[1]);
-	new->y = ft_atoi(str[2]);
-	new->next = NULL;
-	new->link = NULL;
+	new = add_room(data, str);
 	data->rooms++;
 	ft_strdel(&str[1]);
 	ft_strdel(&str[2]);
 	free(str);
-	ft_strdel(&line);
 	if (!data->room)
 		return (new);
 	room = data->room;
@@ -105,21 +113,4 @@ t_room	*parse_room(t_data *data, char *line)
 		room = room->next;
 	room->next = new;
 	return (data->room);
-}
-
-void	parse_data(t_data *data, char *line)
-{
-	int		i;
-
-	i = 0;
-	while (line[i] != ' ' && line[i] != '-' && line[i] != '#')
-		i++;
-	if (line[i] == ' ')
-		data->room = parse_room(data, line);
-	else if (line[i] == '-')
-		parse_link(data, line);
-	else if (line[i] == '#')
-		parse_comment(data, line);
-	else
-		error(line);
 }

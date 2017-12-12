@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem-in.h"
+#include "../lemin.h"
 
 char	**copy_path(char **dest, char **src, int n)
 {
@@ -34,6 +34,7 @@ t_vpath	*add_path(t_vpath *valid, char **path, int path_len)
 	new = malloc(sizeof(t_vpath));
 	new->path = copy_path(new->path, path, path_len + 1);
 	new->len = path_len;
+	new->cost = path_len;
 	new->next = NULL;
 	if (!valid)
 		return (new);

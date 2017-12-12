@@ -10,59 +10,59 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem-in.h"
+#include "../lemin.h"
 
-int		path_cmp(t_vpath *optimal, t_vpath *valid)
+int		path_cmp(t_vpath *opt, t_vpath *vld)
 {
 	int		i;
 	int		j;
-	
-	while (optimal)
+
+	while (opt)
 	{
 		i = 1;
-		while (i < valid->len)
+		while (i < vld->len)
 		{
 			j = 1;
-			while (j < optimal->len)
+			while (j < opt->len)
 			{
-				if (!ft_strcmp(valid->path[i], optimal->path[j]))
+				if (!ft_strcmp(vld->path[i], opt->path[j]))
 					return (1);
 				j++;
 			}
 			i++;
 		}
-		optimal = optimal->next;
+		opt = opt->next;
 	}
 	return (0);
 }
 
-t_vpath	*check_tmp(t_data *data, t_vpath *valid, t_vpath *tmp)
+t_vpath	*check_tmp(t_data *data, t_vpath *vld, t_vpath *tmp)
 {
-	if (!tmp || valid->len < tmp->len)
+	if (!tmp || vld->len < tmp->len)
 	{
-		if (path_cmp(data->optimal, valid))
+		if (path_cmp(data->optimal, vld))
 			return (tmp);
 		data->flag = 0;
-		return (valid);
+		return (vld);
 	}
 	return (tmp);
 }
 
 void	find_optimal_paths(t_data *data)
 {
-	t_vpath	*valid;
+	t_vpath	*vld;
 	t_vpath *tmp;
 
 	data->flag = 0;
 	while (!data->flag)
 	{
 		data->flag = 1;
-		valid = data->valid;
+		vld = data->valid;
 		tmp = NULL;
-		while (valid)
+		while (vld)
 		{
-			tmp = check_tmp(data, valid, tmp);
-			valid = valid->next;
+			tmp = check_tmp(data, vld, tmp);
+			vld = vld->next;
 		}
 		if (!data->flag)
 			data->optimal = add_path(data->optimal, tmp->path, tmp->len);

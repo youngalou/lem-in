@@ -18,7 +18,9 @@ FILES = main.c \
 		parse.c \
 		debug.c \
 		path.c \
-		valid.c \
+		optimal.c \
+		ants.c \
+		utils.c \
 
 SRC = $(addprefix src/, $(FILES))
 
@@ -26,7 +28,7 @@ OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ) lem-in.h
+$(NAME): $(LIBFT) $(OBJ) lemin.h
 	@gcc -o $(NAME) $(CFLAG) $(OBJ) $(LIBFT)
 	@echo "\033[32m- $(NAME) executable compiled\033[0m"
 

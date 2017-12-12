@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem-in.h"
+#include "../lemin.h"
 
 void	print_rooms(t_data *data)
 {
@@ -36,7 +36,8 @@ void	print_links(t_data *data)
 		link = room->link;
 		while (link)
 		{
-			ft_printf("room: %s\tlink: %s\tdist: %d\n", room->id, link->room->id, link->dist);
+			ft_printf("room: %s\tlink: %s\tdist: %d\n",
+						room->id, link->room->id, link->dist);
 			link = link->next;
 		}
 		room = room->next;
@@ -56,25 +57,6 @@ void	print_local_path(char **path, int len)
 	ft_putchar('\n');
 }
 
-void	print_valid_paths(t_data *data)
-{
-	t_vpath	*valid;
-	int		i;
-
-	valid = data->valid;
-	while (valid)
-	{
-		i = 0;
-		while (i <= valid->len)
-		{
-			ft_printf("%s ", valid->path[i]);
-			i++;
-		}
-		valid = valid->next;
-		ft_putchar('\n');
-	}
-}
-
 void	print_optimal_paths(t_data *data)
 {
 	t_vpath	*optimal;
@@ -91,5 +73,18 @@ void	print_optimal_paths(t_data *data)
 		}
 		ft_putchar('\n');
 		optimal = optimal->next;
+	}
+}
+
+void	print_ants(t_data *data)
+{
+	int		i;
+
+	i = 0;
+	while (i < data->ants)
+	{
+		ft_printf("ant #%d: ", i + 1);
+		print_local_path(data->ant[i]->route->path, data->ant[i]->route->len);
+		i++;
 	}
 }
