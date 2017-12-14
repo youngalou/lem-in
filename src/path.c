@@ -98,4 +98,6 @@ void	start_path(t_data *data)
 		room = room->next;
 	find_path(data, room, path, 0);
 	free(path);
+	if (!data->valid)
+		error(data);
 }

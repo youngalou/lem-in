@@ -14,19 +14,14 @@
 
 void	parse_data(t_data *data, char *line)
 {
-	int		i;
-
-	i = 0;
-	while (line[i] != ' ' && line[i] != '-' && line[i] != '#')
-		i++;
-	if (line[i] == ' ')
+	if (check_room(data, line))
 		data->room = parse_room(data, line);
-	else if (line[i] == '-')
+	else if (check_link(data, line))
 		parse_link(data, line);
-	else if (line[i] == '#')
+	else if (check_comment(data, line))
 		parse_comment(data, line);
 	else
-		error(line);
+		error(data);
 }
 
 void	store_line(t_data *data, char *line)
@@ -51,15 +46,20 @@ void	store_line(t_data *data, char *line)
 void	load_data(t_data *data)
 {
 	char	*line;
+	int		bytes;
 
 	get_next_line(0, &line);
 	store_line(data, line);
-	data->ants = ft_atoi(line);
-	while (get_next_line(0, &line) > 0)
+	error_ants(data, line);
+	while ((bytes = get_next_line(0, &line)) != 0)
 	{
+		if (bytes < 0)
+			error(data);
 		store_line(data, line);
 		parse_data(data, line);
 	}
+	if (!data->start_id || !data->end_id)
+		error(data);
 }
 
 t_data	*init_data(void)

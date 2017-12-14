@@ -78,16 +78,6 @@ void				load_data(t_data *data);
 t_data				*init_data(void);
 
 /*
-** --------------- parse.c --------------
-*/
-
-void				parse_comment(t_data *data, char *line);
-t_link				*add_link(t_room *r1, t_room *r2, char *link_id);
-void				parse_link(t_data *data, char *line);
-t_room				*add_room(t_data *data, char **str);
-t_room				*parse_room(t_data *data, char *line);
-
-/*
 ** --------------- debug.c --------------
 */
 
@@ -96,6 +86,16 @@ void				print_links(t_data *data);
 void				print_local_path(char **path, int len);
 void				print_optimal_paths(t_data *data);
 void				print_ants(t_data *data);
+
+/*
+** --------------- parse.c --------------
+*/
+
+void				parse_comment(t_data *data, char *line);
+t_link				*add_link(t_room *r1, t_room *r2, char *link_id);
+void				parse_link(t_data *data, char *line);
+t_room				*add_room(t_data *data, char **str);
+t_room				*parse_room(t_data *data, char *line);
 
 /*
 ** --------------- path.c --------------
@@ -109,7 +109,7 @@ void				find_path(t_data *data, t_room *room,
 void				start_path(t_data *data);
 
 /*
-** --------------- valid.c --------------
+** --------------- optimal.c --------------
 */
 
 int					path_cmp(t_vpath *chosen, t_vpath *valid);
@@ -125,11 +125,29 @@ void				assign_ants(t_data *data);
 void				move_ants(t_data *data);
 
 /*
+** --------------- error.c --------------
+*/
+
+void				error_ants(t_data *data, char *line);
+int					check_room(t_data *data, char *line);
+int					check_link(t_data *data, char *line);
+int					check_comment(t_data *data, char *line);
+
+/*
 ** --------------- utils.c --------------
 */
 
-void				error(char *line);
-void				free_all(t_data *data);
+void				error(t_data *data);
 void				print_input(t_data *data);
+int					is_digits(char *line);
+
+/*
+** --------------- free.c --------------
+*/
+
+void				free_optimal(t_data *data);
+void				free_valid(t_data *data);
+void				free_rooms(t_data *data);
+void				free_all(t_data *data);
 
 #endif

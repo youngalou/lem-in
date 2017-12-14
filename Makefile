@@ -21,6 +21,8 @@ FILES = main.c \
 		optimal.c \
 		ants.c \
 		utils.c \
+		free.c \
+		error.c \
 
 SRC = $(addprefix src/, $(FILES))
 

@@ -12,72 +12,12 @@
 
 #include "../lemin.h"
 
-void	error(char *line)
+void	error(t_data *data)
 {
-	ft_strdel(&line);
+	(void)data;
+	// free_all(data);
 	ft_printf("ERROR\n");
 	exit(0);
-}
-
-void	free_all(t_data *data)
-{
-	void	*tmp;
-	void	*tmp2;
-	int		i;
-
-	while (data->line)
-	{
-		tmp = data->line->next;
-		ft_strdel(&data->line->str);
-		data->line = tmp;
-	}
-	while (data->room)
-	{
-		tmp = data->room->next;
-		ft_strdel(&data->room->id);
-		while (data->room->link)
-		{
-			tmp2 = data->room->link->next;
-			free(data->room->link);
-			data->room->link = tmp2;
-		}
-		free(data->room);
-		data->room = tmp;
-	}
-	while (data->valid)
-	{
-		tmp = data->valid->next;
-		i = 0;
-		while (i <= data->valid->len)
-		{
-			ft_strdel(&data->valid->path[i]);
-			i++;
-		}
-		ft_strdel(data->valid->path);
-		free(data->valid);
-		data->valid = tmp;
-	}
-	while (data->optimal)
-	{
-		tmp = data->optimal->next;
-		i = 0;
-		while (i <= data->optimal->len)
-		{
-			ft_strdel(&data->optimal->path[i]);
-			i++;
-		}
-		// ft_strdel(data->optimal->path); // don't need this free?
-		free(data->optimal);
-		data->optimal = tmp;
-	}
-	i = 0;
-	while (i < data->ants)
-	{
-		free(data->ant[i]);
-		i++;
-	}
-	free(data->ant);
-	free(data);
 }
 
 void	print_input(t_data *data)
@@ -90,4 +30,18 @@ void	print_input(t_data *data)
 		ft_printf("%s\n", line->str);
 		line = line->next;
 	}
+}
+
+int		is_digits(char *line)
+{
+	int		i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (!ft_isdigit(line[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }

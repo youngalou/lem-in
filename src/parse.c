@@ -15,9 +15,17 @@
 void	parse_comment(t_data *data, char *line)
 {
 	if (!ft_strcmp(line, "##start"))
+	{
+		if (data->start_id)
+			error(data);
 		data->st_ed = 1;
+	}
 	else if (!ft_strcmp(line, "##end"))
+	{
+		if (data->end_id)
+			error(data);
 		data->st_ed = 2;
+	}
 }
 
 t_link	*add_link(t_room *r1, t_room *r2, char *link_id)
@@ -40,7 +48,7 @@ t_link	*add_link(t_room *r1, t_room *r2, char *link_id)
 	link = r1->link;
 	while (link->next)
 	{
-		if (!ft_strcmp(link->room->id, link_id)) // should probably free new here (but too many lines D:)
+		if (!ft_strcmp(link->room->id, link_id))
 			return (r1->link);
 		link = link->next;
 	}
@@ -76,6 +84,7 @@ void	parse_link(t_data *data, char *line)
 t_room	*add_room(t_data *data, char **str)
 {
 	t_room	*new;
+	t_room	*room;
 
 	new = (t_room*)malloc(sizeof(t_room));
 	new->id = str[0];
@@ -89,6 +98,17 @@ t_room	*add_room(t_data *data, char **str)
 	new->vac = 0;
 	new->link = NULL;
 	new->next = NULL;
+	room = data->room;
+	while (room)
+	{
+		if (new->x == room->x && new->y == room->y)
+		{
+			ft_strdel(&new->id);
+			free(new);
+			error(data);
+		}
+		room = room->next;
+	}
 	return (new);
 }
 
@@ -99,7 +119,7 @@ t_room	*parse_room(t_data *data, char *line)
 	t_room	*room;
 
 	if (*line == 'L')
-		error(line);
+		error(data);
 	str = ft_strsplit(line, ' ');
 	new = add_room(data, str);
 	data->rooms++;
