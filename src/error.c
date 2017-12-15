@@ -44,6 +44,8 @@ int		check_link(t_data *data, char *line)
 	char	r1;
 	char	r2;
 
+	if (*line == '#')
+		return (0);
 	if (count_words(line, '-') != 2)
 		return (0);
 	str = ft_strsplit(line, '-');
@@ -65,17 +67,11 @@ int		check_link(t_data *data, char *line)
 
 int		check_comment(t_data *data, char *line)
 {
-	int		i;
-
 	(void)data;
-	i = 0;
-	while (i < 2 && line[i])
+	if (line)
 	{
-		if (line[i] != '#')
-			return (0);
-		i++;
+		if (*line == '#')
+			return (1);
 	}
-	if (i < 2)
-		return (0);
-	return (1);
+	return (0);
 }

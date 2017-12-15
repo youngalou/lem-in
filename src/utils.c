@@ -14,8 +14,7 @@
 
 void	error(t_data *data)
 {
-	(void)data;
-	// free_all(data);
+	free_all(data);
 	ft_printf("ERROR\n");
 	exit(0);
 }
@@ -44,4 +43,21 @@ int		is_digits(char *line)
 		i++;
 	}
 	return (1);
+}
+
+void	check_coordinates(t_data *data, t_room *new)
+{
+	t_room	*room;
+
+	room = data->room;
+	while (room)
+	{
+		if (new->x == room->x && new->y == room->y)
+		{
+			ft_strdel(&new->id);
+			free(new);
+			error(data);
+		}
+		room = room->next;
+	}
 }

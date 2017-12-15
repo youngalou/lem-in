@@ -76,6 +76,7 @@ t_data	*init_data(void)
 	data->room = NULL;
 	data->valid = NULL;
 	data->optimal = NULL;
+	data->ant = NULL;
 	return (data);
 }
 

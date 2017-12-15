@@ -92,7 +92,8 @@ void				print_ants(t_data *data);
 */
 
 void				parse_comment(t_data *data, char *line);
-t_link				*add_link(t_room *r1, t_room *r2, char *link_id);
+t_link				*add_link(t_data *data, t_room *r1,
+								t_room *r2, char *link_id);
 void				parse_link(t_data *data, char *line);
 t_room				*add_room(t_data *data, char **str);
 t_room				*parse_room(t_data *data, char *line);
@@ -132,6 +133,7 @@ void				error_ants(t_data *data, char *line);
 int					check_room(t_data *data, char *line);
 int					check_link(t_data *data, char *line);
 int					check_comment(t_data *data, char *line);
+void				check_coordinates(t_data *data, t_room *new);
 
 /*
 ** --------------- utils.c --------------

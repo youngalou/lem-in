@@ -28,7 +28,7 @@ void	parse_comment(t_data *data, char *line)
 	}
 }
 
-t_link	*add_link(t_room *r1, t_room *r2, char *link_id)
+t_link	*add_link(t_data *data, t_room *r1, t_room *r2, char *link_id)
 {
 	t_link	*link;
 	t_link	*new;
@@ -49,7 +49,7 @@ t_link	*add_link(t_room *r1, t_room *r2, char *link_id)
 	while (link->next)
 	{
 		if (!ft_strcmp(link->room->id, link_id))
-			return (r1->link);
+			error(data);
 		link = link->next;
 	}
 	if (ft_strcmp(link->room->id, link_id))
@@ -71,9 +71,9 @@ void	parse_link(t_data *data, char *line)
 	while (room)
 	{
 		if (!ft_strcmp(room->id, r1))
-			room->link = add_link(room, data->room, r2);
+			room->link = add_link(data, room, data->room, r2);
 		else if (!ft_strcmp(room->id, r2))
-			room->link = add_link(room, data->room, r1);
+			room->link = add_link(data, room, data->room, r1);
 		room = room->next;
 	}
 	ft_strdel(&str[0]);
@@ -84,7 +84,6 @@ void	parse_link(t_data *data, char *line)
 t_room	*add_room(t_data *data, char **str)
 {
 	t_room	*new;
-	t_room	*room;
 
 	new = (t_room*)malloc(sizeof(t_room));
 	new->id = str[0];
@@ -98,17 +97,7 @@ t_room	*add_room(t_data *data, char **str)
 	new->vac = 0;
 	new->link = NULL;
 	new->next = NULL;
-	room = data->room;
-	while (room)
-	{
-		if (new->x == room->x && new->y == room->y)
-		{
-			ft_strdel(&new->id);
-			free(new);
-			error(data);
-		}
-		room = room->next;
-	}
+	check_coordinates(data, new);
 	return (new);
 }
 

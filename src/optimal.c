@@ -19,6 +19,8 @@ int		path_cmp(t_vpath *opt, t_vpath *vld)
 
 	while (opt)
 	{
+		if (opt->len == 1 && vld->len == 1)
+			return (1);
 		i = 1;
 		while (i < vld->len)
 		{
